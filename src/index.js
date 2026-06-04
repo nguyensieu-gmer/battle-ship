@@ -35,7 +35,7 @@ class Gameboard {
     this.ships++;
   }
   reduceShips() {
-    this.addShips--;
+    this.ships--;
   }
   placeAShip(x, y, ship) {
     //place ship in horizontal
@@ -77,14 +77,16 @@ class Gameboard {
     }
     if (this.ships > 0) this.ships -= 1;
     this.visited.add(key);
-    if (this.watter[x][y]) {
-      this.watter[x][y].hit();
-    }
-    if (this.watter[x][y].isSunk()) {
-      if (this.ships > 0) {
+    let ship = this.watter[x][y];
+    if (ship) {
+      ship.hit();
+      if (ship.isSunk()) {
         this.reduceShips();
       }
     }
+  }
+  isAllSunk() {
+    return this.ships === 0;
   }
 }
 
