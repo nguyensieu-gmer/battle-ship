@@ -29,6 +29,13 @@ class Gameboard {
     this.col = 10;
     this.watter = createNullMatrix(this.row, this.col, null);
     this.visited = new Set(); // "x,y" same typo
+    this.ships = 0;
+  }
+  addShips() {
+    this.ships++;
+  }
+  reduceShips() {
+    this.addShips--;
   }
   placeAShip(x, y, ship) {
     //place ship in horizontal
@@ -44,6 +51,7 @@ class Gameboard {
     for (let i = 0; i < ship.len; i++) {
       this.watter[x][y + i] = ship;
     }
+    this.addShips();
   }
   isInOfBound(x, y) {
     if (x < 0 || x > this.row - 1 || y < 0 || y > this.col - 1) {
@@ -67,9 +75,15 @@ class Gameboard {
     if (this.visited.has(key)) {
       return;
     }
+    if (this.ships > 0) this.ships -= 1;
     this.visited.add(key);
     if (this.watter[x][y]) {
       this.watter[x][y].hit();
+    }
+    if (this.watter[x][y].isSunk()) {
+      if (this.ships > 0) {
+        this.reduceShips();
+      }
     }
   }
 }
