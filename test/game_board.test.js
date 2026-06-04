@@ -6,9 +6,7 @@ beforeEach(() => {
   mockShip = {
     len: 3,
     hit: jest.fn(),
-    isSunk: () => {
-      return false;
-    },
+    isSunk: jest.fn(),
   };
   board = new Gameboard();
 });
@@ -48,4 +46,10 @@ test('hit a target', () => {
   expect(mockShip.hit).toHaveBeenCalled();
   expect(board.visited.size).not.toBe(0);
   expect(board.visited.has('5,4')).toBe(true);
+});
+
+test('test all sunk method', () => {
+  board.placeAShip(5, 3, mockShip);
+  board.receiveAttack(5, 4);
+  expect(mockShip.isSunk).toHaveBeenCalled();
 });
