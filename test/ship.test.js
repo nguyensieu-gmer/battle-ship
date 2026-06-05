@@ -1,4 +1,4 @@
-import { Ship } from '../src';
+import { Ship } from '../src/game_board';
 
 test('test hit function', () => {
   const sh = new Ship(3);

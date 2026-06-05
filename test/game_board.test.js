@@ -1,4 +1,4 @@
-import { Gameboard } from '../src';
+import { Gameboard } from '../src/game_board';
 
 let board;
 let mockShip;
