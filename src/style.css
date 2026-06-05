@@ -22,6 +22,7 @@
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  font-family: var(--body-font);
 }
 
 img,
@@ -65,4 +66,70 @@ h6 {
 #root,
 #__next {
   isolation: isolate;
+}
+
+:root {
+  /* Màu nền trang */
+  --color-background: #fafafa; /* giấy cũ, beige nhẹ */
+  --color-container: #e1e1e1; /* container nhạt hơn nền để tạo chiều sâu */
+
+  /* Màu chữ */
+  --color-text-main: #000000; /* nâu sẫm, dễ đọc */
+  --color-text-secondary: #5e5e5e; /* nâu nhạt hơn cho subtitle / caption */
+  --color-text-accent: #dfdfdf; /* nâu đỏ ấm để nhấn nhá link / highlight */
+
+  /* Màu nút / link / accent */
+  --color-accent: #4a86a4; /* nâu vàng ấm, tạo điểm nhấn */
+  --color-accent-hover: #99c6dc; /* hover đậm hơn */
+
+  /* Border, divider */
+  --color-border: #304360; /* nâu nhạt / sepia */
+
+  --body-font: 'Montserrat', sans-serif;
+  --second-font: 'Dancing Script', cursive;
+  --biggest-font-size: 3rem;
+  --bigger-font-size: 2rem;
+  --h1-font-size: 1.5rem;
+  --h2-font-size: 1.25rem;
+  --h3-font-size: 1rem;
+  --normal-font-size: 0.938rem;
+  --small-font-size: 0.813rem;
+
+  --font-regular: 400;
+  --font-semi-bold: 600;
+  --font-bold: 700;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  justify-content: space-between;
+  width: 100vw;
+  height: 100vh;
+  margin: 0 auto;
+  background-color: #80ded9;
+}
+
+.player {
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+  height: 80%;
+}
+
+.grid_container {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  height: 100%;
+}
+
+.cell {
+  background-color: #53599a;
+  border: 1px solid black;
 }
