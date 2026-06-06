@@ -127,9 +127,18 @@ html {
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
   height: 100%;
+  gap: 1px;
+  background-color: black;
 }
 
 .cell {
-  background-color: #53599a;
-  border: 1px solid black;
+  background-color: #6d9dc5;
+}
+
+.frendShip {
+  background-color: rgb(99, 179, 99);
+}
+
+.enemyShip {
+  background-color: salmon;
 }
