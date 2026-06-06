@@ -92,26 +92,22 @@ class Gameboard {
 
 class Player {
   constructor() {
-    this.player = new Gameboard();
+    this.realPlayer = new Gameboard();
     this.computer = new Gameboard();
     this.putPlace();
   }
   putPlace() {
-    this.player.placeAShip(0, 0, new Ship(2));
-    this.player.placeAShip(3, 5, new Ship(3));
-    this.player.placeAShip(9, 4, new Ship(3));
-    this.player.placeAShip(7, 3, new Ship(4));
-    this.player.placeAShip(5, 5, new Ship(5));
-
-    console.log(this.player.watter);
+    this.realPlayer.placeAShip(0, 0, new Ship(2));
+    this.realPlayer.placeAShip(3, 5, new Ship(3));
+    this.realPlayer.placeAShip(9, 4, new Ship(3));
+    this.realPlayer.placeAShip(7, 3, new Ship(4));
+    this.realPlayer.placeAShip(5, 5, new Ship(5));
 
     this.computer.placeAShip(0, 0, new Ship(2));
     this.computer.placeAShip(3, 5, new Ship(3));
     this.computer.placeAShip(9, 4, new Ship(3));
     this.computer.placeAShip(7, 3, new Ship(4));
     this.computer.placeAShip(5, 5, new Ship(5));
-
-    console.log(this.computer.watter);
   }
 }
 
