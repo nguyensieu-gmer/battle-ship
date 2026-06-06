@@ -69,11 +69,11 @@ class Gameboard {
   }
   receiveAttack(x, y) {
     if (!this.isInOfBound(x, y)) {
-      return;
+      return false;
     }
     let key = `${x},${y}`;
     if (this.visited.has(key)) {
-      return;
+      return false;
     }
     if (this.ships > 0) this.ships -= 1;
     this.visited.add(key);
@@ -84,6 +84,7 @@ class Gameboard {
         this.reduceShips();
       }
     }
+    return true;
   }
   isAllSunk() {
     return this.ships === 0;
