@@ -126,13 +126,17 @@ html {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
-  height: 100%;
+  height: 50rem;
+  width: 50rem;
   gap: 1px;
   background-color: black;
 }
 
 .cell {
   background-color: #6d9dc5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .frendShip {
@@ -141,4 +145,12 @@ html {
 
 .enemyShip {
   background-color: salmon;
+}
+
+.attacked {
+  width: 40%;
+  height: 40%;
+  border-radius: 50%;
+  background-color: rgba(250, 25, 0, 0.451);
+  z-index: 1;
 }
