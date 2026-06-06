@@ -5,11 +5,16 @@ class Render {
     this.renderIntoScreen();
     this.displaymaxtrix();
   }
-  displaymaxtrix() {
-    console.log(this.player.realPlayer.watter);
-    console.log(this.player.computer.watter);
+  makeMarkAttack() {
+    const attack = document.createElement('div');
+    attack.classList.add('attacked');
+    return attack;
   }
-  renderPlayerBoard(playerBoard, playerName, id, shipColor) {
+  displaymaxtrix() {
+    console.log(this.player.realPlayer.water);
+    console.log(this.player.computer.water);
+  }
+  renderPlayerBoard(playerBoard, markBoard, playerName, id, shipColor) {
     const player1 = document.createElement('div');
     player1.id = id;
     player1.classList.add('player');
@@ -19,11 +24,14 @@ class Render {
     player1.appendChild(name);
     const gridContainer = document.createElement('div');
     gridContainer.classList.add('grid_container');
-
     for (let i = 0; i < playerBoard.length; i++) {
       for (let j = 0; j < playerBoard[0].length; j++) {
         const cell = document.createElement('div');
         if (playerBoard[i][j]) cell.classList.add(shipColor);
+        if (markBoard[i][j] === 1) {
+          const attack = this.makeMarkAttack();
+          cell.appendChild(attack);
+        }
         cell.classList.add('cell');
         cell.dataset.row = i;
         cell.dataset.col = j;
@@ -36,13 +44,15 @@ class Render {
   renderIntoScreen() {
     this.container.innerHTML = '';
     const player = this.renderPlayerBoard(
-      this.player.realPlayer.watter,
+      this.player.realPlayer.water,
+      this.player.realPlayer.attacked,
       'Player',
       'realplayer',
       'frendShip',
     );
     const computer = this.renderPlayerBoard(
-      this.player.computer.watter,
+      this.player.computer.water,
+      this.player.computer.attacked,
       'Computer',
       'computer',
       'enemyShip',
