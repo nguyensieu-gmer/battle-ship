@@ -27,8 +27,8 @@ class Gameboard {
   constructor() {
     this.row = 10;
     this.col = 10;
-    this.watter = createNullMatrix(this.row, this.col, null);
-    this.visited = new Set(); // "x,y" same typo
+    this.water = createNullMatrix(this.row, this.col, null);
+    this.attacked = createNullMatrix(this.row, this.col, 0);
     this.ships = 0;
   }
   addShips() {
@@ -40,18 +40,19 @@ class Gameboard {
   placeAShip(x, y, ship) {
     //place ship in horizontal
     if (!this.isInOfBound(x, y)) {
-      return;
+      return false;
     }
-    if (y + ship.len - 1 > this.row - 1) {
-      return;
+    if (y + ship.len - 1 > this.col - 1) {
+      return false;
     }
     if (!this.canPlace(x, y, ship)) {
-      return;
+      return false;
     }
     for (let i = 0; i < ship.len; i++) {
-      this.watter[x][y + i] = ship;
+      this.water[x][y + i] = ship;
     }
     this.addShips();
+    return true;
   }
   isInOfBound(x, y) {
     if (x < 0 || x > this.row - 1 || y < 0 || y > this.col - 1) {
@@ -61,7 +62,7 @@ class Gameboard {
   }
   canPlace(x, y, ship) {
     for (let i = 0; i < ship.len; i++) {
-      if (this.watter[x][y + i]) {
+      if (this.water[x][y + i]) {
         return false;
       }
     }
@@ -71,13 +72,11 @@ class Gameboard {
     if (!this.isInOfBound(x, y)) {
       return false;
     }
-    let key = `${x},${y}`;
-    if (this.visited.has(key)) {
+    if (this.attacked[x][y] === 1) {
       return false;
     }
-    if (this.ships > 0) this.ships -= 1;
-    this.visited.add(key);
-    let ship = this.watter[x][y];
+    this.attacked[x][y] = 1;
+    let ship = this.water[x][y];
     if (ship) {
       ship.hit();
       if (ship.isSunk()) {
