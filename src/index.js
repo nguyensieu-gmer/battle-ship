@@ -6,12 +6,16 @@ class Controller {
   constructor() {
     this.player = new Player();
     this.render = new Render();
+    this.render.renderIntoScreen(this.player);
     this.enemyZone = document.querySelector('#computer .grid_container');
+
     this.playerAttack = null;
     this.computerAttack = this.randomAttack();
     this.playerTurn = true;
 
-    this.render.renderIntoScreen(this.player);
+    this.init();
+  }
+  init() {
     this.bindEvent();
   }
   resetBoard() {
