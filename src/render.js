@@ -53,6 +53,10 @@ class Render {
     this.container.appendChild(real);
     this.container.appendChild(computer);
   }
+  markAttackForCell(cell) {
+    const attack = this.makeMarkAttack();
+    cell.appendChild(attack);
+  }
 }
 
 export { Render };
