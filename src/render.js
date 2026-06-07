@@ -3,16 +3,11 @@ class Render {
     this.container = document.querySelector('.container');
     this.player = player;
     this.renderIntoScreen();
-    this.displaymaxtrix();
   }
   makeMarkAttack() {
     const attack = document.createElement('div');
     attack.classList.add('attacked');
     return attack;
-  }
-  displaymaxtrix() {
-    console.log(this.player.realPlayer.water);
-    console.log(this.player.computer.water);
   }
   renderPlayerBoard(playerBoard, markBoard, playerName, id, shipColor) {
     const player1 = document.createElement('div');
