@@ -1,8 +1,6 @@
 class Render {
-  constructor(player) {
+  constructor() {
     this.container = document.querySelector('.container');
-    this.player = player;
-    this.renderIntoScreen();
   }
   makeMarkAttack() {
     const attack = document.createElement('div');
@@ -36,23 +34,23 @@ class Render {
     player1.appendChild(gridContainer);
     return player1;
   }
-  renderIntoScreen() {
+  renderIntoScreen(player) {
     this.container.innerHTML = '';
-    const player = this.renderPlayerBoard(
-      this.player.realPlayer.water,
-      this.player.realPlayer.attacked,
+    const real = this.renderPlayerBoard(
+      player.realPlayer.water,
+      player.realPlayer.attacked,
       'Player',
       'realplayer',
       'frendShip',
     );
     const computer = this.renderPlayerBoard(
-      this.player.computer.water,
-      this.player.computer.attacked,
+      player.computer.water,
+      player.computer.attacked,
       'Computer',
       'computer',
       'enemyShip',
     );
-    this.container.appendChild(player);
+    this.container.appendChild(real);
     this.container.appendChild(computer);
   }
 }
