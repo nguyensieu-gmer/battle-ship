@@ -20,12 +20,12 @@ class Render {
     for (let i = 0; i < playerBoard.length; i++) {
       for (let j = 0; j < playerBoard[0].length; j++) {
         const cell = document.createElement('div');
+        cell.classList.add('cell');
         if (playerBoard[i][j]) cell.classList.add(shipColor);
         if (markBoard[i][j] === 1) {
           const attack = this.makeMarkAttack();
           cell.appendChild(attack);
         }
-        cell.classList.add('cell');
         cell.dataset.row = i;
         cell.dataset.col = j;
         gridContainer.appendChild(cell);
