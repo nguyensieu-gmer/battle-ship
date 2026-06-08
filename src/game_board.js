@@ -108,9 +108,6 @@ class Player {
     this.computer.placeAShip(9, 4, new Ship(3));
     this.computer.placeAShip(7, 3, new Ship(4));
     this.computer.placeAShip(5, 5, new Ship(5));
-
-    this.realPlayer.receiveAttack(6, 6);
-    this.computer.receiveAttack(6, 6);
   }
 }
 
