@@ -7,7 +7,11 @@ class Controller {
     this.player = new Player();
     this.render = new Render();
     this.render.renderIntoScreen(this.player);
-    this.enemyZone = document.querySelector('#computer .grid_container');
+    this.enemyZone = document.getElementById('enemy');
+    this.friendZone = document.getElementById('friend');
+
+    this.winnerDialog = document.getElementById('winner_dialog');
+    this.winner = document.getElementById('winner');
 
     this.init();
   }
@@ -27,6 +31,12 @@ class Controller {
       if (!success) return;
       this.computerAttack();
       this.render.markAttackForCell(cell);
+      this.haveWinner();
+    });
+    this.winnerDialog.addEventListener('close', () => {
+      if (this.winnerDialog.returnValue === 'cancel') {
+        this.resetGame();
+      }
     });
   }
   randomAttack() {
@@ -42,6 +52,21 @@ class Controller {
     this.player.realPlayer.receiveAttack(x, y);
     const cell = document.querySelector(`[data-row='${x}'][data-col='${y}']`);
     this.render.markAttackForCell(cell);
+  }
+  resetGame() {
+    this.player = new Player();
+    this.render.renderBoard(this.player.realPlayer, this.friendZone);
+    this.render.renderBoard(this.player.computer, this.enemyZone);
+  }
+  haveWinner() {
+    if (this.player.computer.isAllSunk()) {
+      this.winner.textContent = 'Human';
+      this.winnerDialog.showModal();
+    }
+    if (this.player.realPlayer.isAllSunk()) {
+      this.winner.textContent = 'Computer';
+      this.winnerDialog.showModal();
+    }
   }
 }
 
