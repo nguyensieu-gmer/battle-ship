@@ -70,4 +70,35 @@ class Controller {
   }
 }
 
-new Controller();
+const render = new Render();
+const player = new Player();
+render.showShipPlacement(player.realPlayer);
+
+const shipsElement = document.querySelectorAll('.ship');
+const chooseableArea = document.querySelector('.main_board .grid_container');
+
+shipsElement.forEach((ship) => {
+  ship.addEventListener('dragstart', () => {
+    ship.classList.add('dragging');
+  });
+
+  ship.addEventListener('dragend', () => {
+    ship.classList.remove('dragging');
+  });
+});
+
+chooseableArea.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  if (!e.target.closest('.cell')) {
+    return;
+  }
+  // color area
+});
+
+chooseableArea.addEventListener('drop', (e) => {
+  if (!e.target.closest('.cell')) {
+    return;
+  }
+  // delete ship ui
+  // put ship and recolor ship
+});
