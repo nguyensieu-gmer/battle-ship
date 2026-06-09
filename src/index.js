@@ -1,4 +1,4 @@
-import { Player } from './game_board.js';
+import { Player, Ship } from './game_board.js';
 import { Render } from './render.js';
 import './style.css';
 
@@ -25,8 +25,8 @@ class Controller {
     this.enemyZone.addEventListener('click', (e) => {
       const cell = e.target.closest('.cell');
       if (!cell) return;
-      const x = cell.dataset.row;
-      const y = cell.dataset.col;
+      const x = Number(cell.dataset.row);
+      const y = Number(cell.dataset.col);
       const success = this.player.computer.receiveAttack(x, y);
       if (!success) return;
       this.computerAttack();
@@ -50,13 +50,16 @@ class Controller {
       [x, y] = this.randomAttack();
     }
     this.player.realPlayer.receiveAttack(x, y);
-    const cell = document.querySelector(`[data-row='${x}'][data-col='${y}']`);
+    const cell = this.friendZone.querySelector(
+      `[data-row='${x}'][data-col='${y}']`,
+    );
     this.render.markAttackForCell(cell);
   }
   resetGame() {
     this.player = new Player();
     this.render.renderBoard(this.player.realPlayer, this.friendZone);
     this.render.renderBoard(this.player.computer, this.enemyZone);
+    this.bindEvent();
   }
   haveWinner() {
     if (this.player.computer.isAllSunk()) {
@@ -74,12 +77,16 @@ const render = new Render();
 const player = new Player();
 render.showShipPlacement(player.realPlayer);
 
+let previewCell = [];
 const shipsElement = document.querySelectorAll('.ship');
 const chooseableArea = document.querySelector('.main_board .grid_container');
+let currentShip = null;
 
 shipsElement.forEach((ship) => {
   ship.addEventListener('dragstart', () => {
     ship.classList.add('dragging');
+    const dragging = document.querySelector('.dragging');
+    currentShip = new Ship(Number(dragging.dataset.value));
   });
 
   ship.addEventListener('dragend', () => {
@@ -89,16 +96,57 @@ shipsElement.forEach((ship) => {
 
 chooseableArea.addEventListener('dragover', (e) => {
   e.preventDefault();
-  if (!e.target.closest('.cell')) {
-    return;
+  const cell = e.target.closest('.cell');
+  if (!cell) return;
+  const x = Number(cell.dataset.row);
+  const y = Number(cell.dataset.col);
+  showPreview(x, y, currentShip);
+});
+
+function showPreview(x, y, ship) {
+  clearPreview();
+  let cells = [];
+  for (let i = 0; i < ship.len; i++) {
+    let nx = x;
+    let ny = y + i;
+    if (nx >= 10 || ny >= 10) return;
+    const cell = document.querySelector(`[data-row='${nx}'][data-col='${ny}']`);
+    cells.push(cell);
   }
-  // color area
+  const valid = cells.every((c) => {
+    return !c.classList.contains('occupied');
+  });
+  cells.forEach((c) => {
+    c.classList.add(valid ? 'preview' : 'invalid');
+  });
+  previewCell = cells;
+}
+
+function clearPreview() {
+  previewCell.forEach((c) => {
+    c.classList.remove('preview', 'invalid');
+  });
+  previewCell = [];
+}
+
+chooseableArea.addEventListener('dragleave', () => {
+  clearPreview();
 });
 
 chooseableArea.addEventListener('drop', (e) => {
-  if (!e.target.closest('.cell')) {
-    return;
-  }
-  // delete ship ui
-  // put ship and recolor ship
+  const cell = e.target.closest('.cell');
+  if (!cell) return;
+  if (!currentShip) return;
+  const x = Number(cell.dataset.row);
+  const y = Number(cell.dataset.col);
+  const put = player.realPlayer.placeAShip(x, y, currentShip);
+  previewCell.forEach((c) => {
+    const x = Number(c.dataset.row);
+    const y = Number(c.dataset.col);
+    player.realPlayer.occupyACell(x, y);
+  });
+  render.renderBoard(player.realPlayer, chooseableArea);
+  const dragging = document.querySelector('.dragging');
+  if (put) dragging.remove();
+  clearPreview();
 });
