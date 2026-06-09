@@ -155,3 +155,45 @@ html {
   background-color: rgba(250, 25, 0, 0.451);
   z-index: 1;
 }
+
+/* main_board */
+.choose_board {
+  display: flex;
+  gap: 3rem;
+}
+.main_board {
+  display: flex;
+  flex-direction: column;
+}
+.ships_area {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.ship {
+  width: 9rem;
+  height: 9rem;
+  background-color: gray;
+  cursor: move;
+}
+
+.ship.dragging {
+  opacity: 0.5;
+}
+
+.ship_container {
+  width: 9rem;
+  height: 9rem;
+  background-color: rgb(198, 196, 196);
+}
+.decision_area {
+  display: flex;
+  height: 7rem;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+}
+button {
+  border: 1px solid black;
+  padding: 1rem 1.5rem;
+}
