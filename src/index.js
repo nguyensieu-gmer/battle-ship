@@ -18,9 +18,6 @@ class Controller {
   init() {
     this.bindEvent();
   }
-  resetBoard() {
-    this.render.renderIntoScreen(this.player);
-  }
   bindEvent() {
     this.enemyZone.addEventListener('click', (e) => {
       const cell = e.target.closest('.cell');
