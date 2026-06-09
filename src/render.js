@@ -32,11 +32,13 @@ class Render {
     const shipsArea = document.createElement('div');
     shipsArea.classList.add('ships_area');
     chooseBoard.appendChild(shipsArea);
-    for (let i = 0; i < 4; i++) {
+    const shipList = [2, 3, 3, 4, 5];
+    for (let i = 0; i < shipList.length; i++) {
       const shipContainer = document.createElement('div');
       shipContainer.classList.add('ship_container');
       const ship = document.createElement('div');
       ship.classList.add('ship');
+      ship.dataset.value = shipList[i];
       shipContainer.appendChild(ship);
       ship.draggable = true;
       shipsArea.appendChild(shipContainer);
@@ -111,6 +113,9 @@ class Render {
         if (player.attacked[i][j] === 1) {
           const attack = this.makeMarkAttack();
           cell.appendChild(attack);
+        }
+        if (player.isOccupied(i, j)) {
+          cell.classList.add('occupied');
         }
         cell.dataset.row = i;
         cell.dataset.col = j;
