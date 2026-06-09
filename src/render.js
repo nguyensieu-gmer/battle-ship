@@ -6,6 +6,42 @@ class Render {
     this.friend = 'friend';
     this.enemy = 'enemy';
   }
+  showShipPlacement(player) {
+    const chooseBoard = document.createElement('div');
+    chooseBoard.classList.add('choose_board');
+    this.container.appendChild(chooseBoard);
+    const mainBoard = document.createElement('div');
+    mainBoard.classList.add('main_board');
+    chooseBoard.appendChild(mainBoard);
+    const gridContainer = document.createElement('div');
+    gridContainer.classList.add('grid_container');
+    gridContainer.id = this.friend;
+    mainBoard.appendChild(gridContainer);
+    this.renderBoard(player, gridContainer);
+    const decisionArea = document.createElement('div');
+    decisionArea.classList.add('decision_area');
+    mainBoard.appendChild(decisionArea);
+    const reset = document.createElement('button');
+    reset.id = 'reset';
+    reset.textContent = 'Reset';
+    decisionArea.appendChild(reset);
+    const confirm = document.createElement('button');
+    confirm.id = 'confirm';
+    confirm.textContent = 'Confirm';
+    decisionArea.appendChild(confirm);
+    const shipsArea = document.createElement('div');
+    shipsArea.classList.add('ships_area');
+    chooseBoard.appendChild(shipsArea);
+    for (let i = 0; i < 4; i++) {
+      const shipContainer = document.createElement('div');
+      shipContainer.classList.add('ship_container');
+      const ship = document.createElement('div');
+      ship.classList.add('ship');
+      shipContainer.appendChild(ship);
+      ship.draggable = true;
+      shipsArea.appendChild(shipContainer);
+    }
+  }
   makeMarkAttack() {
     const attack = document.createElement('div');
     attack.classList.add('attacked');
