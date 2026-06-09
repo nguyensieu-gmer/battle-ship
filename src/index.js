@@ -6,19 +6,21 @@ class Controller {
   constructor() {
     this.player = new Player();
     this.render = new Render();
+    this.enemyZone = null; // after render competion
+    this.friendZone = null; //  after render competion
+
+    this.winnerDialog = document.getElementById('winner_dialog'); // in template
+    this.winner = document.getElementById('winner'); // in template
+
+    this.initAfterChoose(); // it will not init first
+  }
+  initAfterChoose() {
     this.render.renderIntoScreen(this.player);
-    this.enemyZone = document.getElementById('enemy');
     this.friendZone = document.getElementById('friend');
-
-    this.winnerDialog = document.getElementById('winner_dialog');
-    this.winner = document.getElementById('winner');
-
-    this.init();
+    this.enemyZone = document.getElementById('enemy');
+    this.bindEventAfterChoose();
   }
-  init() {
-    this.bindEvent();
-  }
-  bindEvent() {
+  bindEventAfterChoose() {
     this.enemyZone.addEventListener('click', (e) => {
       const cell = e.target.closest('.cell');
       if (!cell) return;
@@ -32,7 +34,7 @@ class Controller {
     });
     this.winnerDialog.addEventListener('close', () => {
       if (this.winnerDialog.returnValue === 'cancel') {
-        this.resetGame();
+        this.resetGame(); // notice when it change after intergrate
       }
     });
   }
@@ -52,11 +54,12 @@ class Controller {
     );
     this.render.markAttackForCell(cell);
   }
+  // notice when it change after intergrate
   resetGame() {
     this.player = new Player();
     this.render.renderBoard(this.player.realPlayer, this.friendZone);
     this.render.renderBoard(this.player.computer, this.enemyZone);
-    this.bindEvent();
+    this.bindEventAfterChoose(); // it probaly change
   }
   haveWinner() {
     if (this.player.computer.isAllSunk()) {
@@ -70,80 +73,82 @@ class Controller {
   }
 }
 
-const render = new Render();
-const player = new Player();
-render.showShipPlacement(player.realPlayer);
+new Controller();
 
-let previewCell = [];
-const shipsElement = document.querySelectorAll('.ship');
-const chooseableArea = document.querySelector('.main_board .grid_container');
-let currentShip = null;
+// const render = new Render();
+// const player = new Player();
+// render.showShipPlacement(player.realPlayer);
 
-shipsElement.forEach((ship) => {
-  ship.addEventListener('dragstart', () => {
-    ship.classList.add('dragging');
-    const dragging = document.querySelector('.dragging');
-    currentShip = new Ship(Number(dragging.dataset.value));
-  });
+// let previewCell = [];
+// const shipsElement = document.querySelectorAll('.ship');
+// const chooseableArea = document.querySelector('.main_board .grid_container');
+// let currentShip = null;
 
-  ship.addEventListener('dragend', () => {
-    ship.classList.remove('dragging');
-  });
-});
+// shipsElement.forEach((ship) => {
+//   ship.addEventListener('dragstart', () => {
+//     ship.classList.add('dragging');
+//     const dragging = document.querySelector('.dragging');
+//     currentShip = new Ship(Number(dragging.dataset.value));
+//   });
 
-chooseableArea.addEventListener('dragover', (e) => {
-  e.preventDefault();
-  const cell = e.target.closest('.cell');
-  if (!cell) return;
-  const x = Number(cell.dataset.row);
-  const y = Number(cell.dataset.col);
-  showPreview(x, y, currentShip);
-});
+//   ship.addEventListener('dragend', () => {
+//     ship.classList.remove('dragging');
+//   });
+// });
 
-function showPreview(x, y, ship) {
-  clearPreview();
-  let cells = [];
-  for (let i = 0; i < ship.len; i++) {
-    let nx = x;
-    let ny = y + i;
-    if (nx >= 10 || ny >= 10) return;
-    const cell = document.querySelector(`[data-row='${nx}'][data-col='${ny}']`);
-    cells.push(cell);
-  }
-  const valid = cells.every((c) => {
-    return !c.classList.contains('occupied');
-  });
-  cells.forEach((c) => {
-    c.classList.add(valid ? 'preview' : 'invalid');
-  });
-  previewCell = cells;
-}
+// chooseableArea.addEventListener('dragover', (e) => {
+//   e.preventDefault();
+//   const cell = e.target.closest('.cell');
+//   if (!cell) return;
+//   const x = Number(cell.dataset.row);
+//   const y = Number(cell.dataset.col);
+//   showPreview(x, y, currentShip);
+// });
 
-function clearPreview() {
-  previewCell.forEach((c) => {
-    c.classList.remove('preview', 'invalid');
-  });
-  previewCell = [];
-}
+// function showPreview(x, y, ship) {
+//   clearPreview();
+//   let cells = [];
+//   for (let i = 0; i < ship.len; i++) {
+//     let nx = x;
+//     let ny = y + i;
+//     if (nx >= 10 || ny >= 10) return;
+//     const cell = document.querySelector(`[data-row='${nx}'][data-col='${ny}']`);
+//     cells.push(cell);
+//   }
+//   const valid = cells.every((c) => {
+//     return !c.classList.contains('occupied');
+//   });
+//   cells.forEach((c) => {
+//     c.classList.add(valid ? 'preview' : 'invalid');
+//   });
+//   previewCell = cells;
+// }
 
-chooseableArea.addEventListener('dragleave', () => {
-  clearPreview();
-});
+// function clearPreview() {
+//   previewCell.forEach((c) => {
+//     c.classList.remove('preview', 'invalid');
+//   });
+//   previewCell = [];
+// }
 
-chooseableArea.addEventListener('drop', (e) => {
-  const cell = e.target.closest('.cell');
-  if (!cell) return;
-  if (!currentShip) return;
-  const x = Number(cell.dataset.row);
-  const y = Number(cell.dataset.col);
-  const put = player.realPlayer.placeAShip(x, y, currentShip);
-  previewCell.forEach((c) => {
-    const x = Number(c.dataset.row);
-    const y = Number(c.dataset.col);
-    player.realPlayer.occupyACell(x, y);
-  });
-  render.renderBoard(player.realPlayer, chooseableArea);
-  const dragging = document.querySelector('.dragging');
-  if (put) dragging.remove();
-  clearPreview();
-});
+// chooseableArea.addEventListener('dragleave', () => {
+//   clearPreview();
+// });
+
+// chooseableArea.addEventListener('drop', (e) => {
+//   const cell = e.target.closest('.cell');
+//   if (!cell) return;
+//   if (!currentShip) return;
+//   const x = Number(cell.dataset.row);
+//   const y = Number(cell.dataset.col);
+//   const put = player.realPlayer.placeAShip(x, y, currentShip);
+//   previewCell.forEach((c) => {
+//     const x = Number(c.dataset.row);
+//     const y = Number(c.dataset.col);
+//     player.realPlayer.occupyACell(x, y);
+//   });
+//   render.renderBoard(player.realPlayer, chooseableArea);
+//   const dragging = document.querySelector('.dragging');
+//   if (put) dragging.remove();
+//   clearPreview();
+// });
