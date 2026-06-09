@@ -29,7 +29,14 @@ class Gameboard {
     this.col = 10;
     this.water = createNullMatrix(this.row, this.col, null);
     this.attacked = createNullMatrix(this.row, this.col, 0);
+    this.occupied = createNullMatrix(this.row, this.col, 0);
     this.ships = 0;
+  }
+  occupyACell(x, y) {
+    this.occupied[x][y] = 1;
+  }
+  isOccupied(x, y) {
+    return this.occupied[x][y] === 1;
   }
   addShips() {
     this.ships++;
