@@ -72,6 +72,7 @@ class Controller {
         alert('you need to put all ship to play');
         return;
       }
+      this.placeShipRandomly(this.player.computer, this.shipList, 10, 10);
       this.initAfterChoose();
     });
     this.resetBtn.addEventListener('click', () => {
@@ -166,6 +167,18 @@ class Controller {
       c.classList.remove('preview', 'invalid');
     });
     this.previewCell = [];
+  }
+  // can be change if it can be put ship in y-axis
+  placeShipRandomly(player, shipList, rightBoundary, bottomBoundary) {
+    for (let lenOfShip of shipList) {
+      const ship = new Ship(lenOfShip);
+      let x = Math.floor(Math.random() * bottomBoundary);
+      let y = Math.floor(Math.random() * rightBoundary);
+      while (!player.placeAShip(x, y, ship)) {
+        x = Math.floor(Math.random() * bottomBoundary);
+        y = Math.floor(Math.random() * rightBoundary);
+      }
+    }
   }
 }
 
