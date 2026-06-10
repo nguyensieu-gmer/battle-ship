@@ -104,7 +104,8 @@ class Controller {
     });
     this.winnerDialog.addEventListener('close', () => {
       if (this.winnerDialog.returnValue === 'cancel') {
-        this.resetGame(); // notice when it change after intergrate
+        this.player = new Player();
+        this.firstInit();
       }
     });
   }
