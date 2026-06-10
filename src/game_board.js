@@ -105,20 +105,6 @@ class Player {
   constructor() {
     this.realPlayer = new Gameboard();
     this.computer = new Gameboard();
-    this.putship();
-  }
-  putship() {
-    // this.realPlayer.placeAShip(0, 0, new Ship(2));
-    // this.realPlayer.placeAShip(3, 5, new Ship(3));
-    // this.realPlayer.placeAShip(9, 4, new Ship(3));
-    // this.realPlayer.placeAShip(7, 3, new Ship(4));
-    // this.realPlayer.placeAShip(5, 5, new Ship(5));
-
-    this.computer.placeAShip(0, 0, new Ship(2));
-    this.computer.placeAShip(3, 5, new Ship(3));
-    this.computer.placeAShip(9, 4, new Ship(3));
-    this.computer.placeAShip(7, 3, new Ship(4));
-    this.computer.placeAShip(5, 5, new Ship(5));
   }
 }
 
