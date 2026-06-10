@@ -57,6 +57,7 @@ class Gameboard {
     }
     for (let i = 0; i < ship.len; i++) {
       this.water[x][y + i] = ship;
+      this.occupyACell(x, y + i);
     }
     this.addShips();
     return true;

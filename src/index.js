@@ -61,11 +61,6 @@ class Controller {
       const x = Number(cell.dataset.row);
       const y = Number(cell.dataset.col);
       const put = this.player.realPlayer.placeAShip(x, y, this.currentShip);
-      this.previewCell.forEach((c) => {
-        const x = Number(c.dataset.row);
-        const y = Number(c.dataset.col);
-        this.player.realPlayer.occupyACell(x, y);
-      });
       this.render.renderBoard(this.player.realPlayer, this.chooseableArea);
       const dragging = document.querySelector('.dragging');
       if (put) dragging.remove();
@@ -91,15 +86,17 @@ class Controller {
     this.bindEventAfterChoose();
   }
   bindEventAfterChoose() {
+    // realPlayer attack turn
     this.enemyZone.addEventListener('click', (e) => {
       const cell = e.target.closest('.cell');
       if (!cell) return;
       const x = Number(cell.dataset.row);
       const y = Number(cell.dataset.col);
       const success = this.player.computer.receiveAttack(x, y);
+      const hit = this.player.computer.isOccupied(x, y);
       if (!success) return;
       this.computerAttack();
-      this.render.markAttackForCell(cell);
+      this.render.markAttackForCell(cell, hit);
       this.haveWinner();
     });
     this.winnerDialog.addEventListener('close', () => {
@@ -114,6 +111,7 @@ class Controller {
     const y = Math.floor(Math.random() * 10);
     return [x, y];
   }
+  // computer attack turn
   computerAttack() {
     let [x, y] = this.randomAttack();
     while (this.player.realPlayer.attacked[x][y] === 1) {
@@ -123,7 +121,8 @@ class Controller {
     const cell = this.friendZone.querySelector(
       `[data-row='${x}'][data-col='${y}']`,
     );
-    this.render.markAttackForCell(cell);
+    const hit = this.player.realPlayer.isOccupied(x, y);
+    this.render.markAttackForCell(cell, hit);
   }
   // notice when it change after intergrate
   resetGame() {
