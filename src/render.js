@@ -7,6 +7,7 @@ class Render {
     this.enemy = 'enemy';
   }
   showShipPlacement(player, shipList) {
+    this.container.innerHTML = '';
     const chooseBoard = document.createElement('div');
     chooseBoard.classList.add('choose_board');
     this.container.appendChild(chooseBoard);
