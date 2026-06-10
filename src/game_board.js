@@ -95,6 +95,9 @@ class Gameboard {
   isAllSunk() {
     return this.ships === 0;
   }
+  putEnoughShip(maxAmountOfShip) {
+    return this.ships === maxAmountOfShip;
+  }
 }
 
 class Player {
