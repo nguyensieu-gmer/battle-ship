@@ -60,3 +60,10 @@ test('test with 3 ship', () => {
   board.placeAShip(2, 0, mockShip);
   expect(board.putEnoughShip(3)).toBe(true);
 });
+
+test('a ship is sink or not', () => {
+  board.placeAShip(0, 0, mockShip);
+  board.receiveAttack(0, 1);
+  board.isShipSunk(0, 0);
+  expect(mockShip.isSunk).toHaveBeenCalled();
+});
