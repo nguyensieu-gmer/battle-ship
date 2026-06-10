@@ -52,3 +52,11 @@ test('test all sunk method', () => {
   board.receiveAttack(5, 4);
   expect(mockShip.isSunk).toHaveBeenCalled();
 });
+
+test('test with 3 ship', () => {
+  board.placeAShip(0, 0, mockShip);
+  board.placeAShip(1, 0, mockShip);
+  expect(board.putEnoughShip(3)).toBe(false);
+  board.placeAShip(2, 0, mockShip);
+  expect(board.putEnoughShip(3)).toBe(true);
+});
