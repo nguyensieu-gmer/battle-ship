@@ -32,6 +32,12 @@ class Gameboard {
     this.occupied = createNullMatrix(this.row, this.col, 0);
     this.ships = 0;
   }
+  isShipSunk(x, y) {
+    if (this.water[x][y] && this.water[x][y].isSunk()) {
+      return true;
+    }
+    return false;
+  }
   occupyACell(x, y) {
     this.occupied[x][y] = 1;
   }
