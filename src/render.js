@@ -96,8 +96,9 @@ class Render {
     this.container.appendChild(real);
     this.container.appendChild(computer);
   }
-  markAttackForCell(cell) {
+  markAttackForCell(cell, hit) {
     const attack = this.makeMarkAttack();
+    attack.classList.add(hit ? 'hit' : 'miss');
     cell.appendChild(attack);
   }
   renderBoard(player, container) {
