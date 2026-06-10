@@ -14,6 +14,7 @@ class Controller {
     this.currentShip = null;
     this.confirmBtn = null;
     this.shipList = [2, 3, 3, 4, 5];
+    this.resetBtn = null;
 
     this.winnerDialog = document.getElementById('winner_dialog'); // in template
     this.winner = document.getElementById('winner'); // in template
@@ -27,6 +28,7 @@ class Controller {
     this.chooseableArea = document.querySelector('.main_board .grid_container');
     this.currentShip = null;
     this.confirmBtn = document.getElementById('confirm');
+    this.resetBtn = document.getElementById('reset');
     this.bindEventFirst();
   }
   bindEventFirst() {
@@ -76,6 +78,10 @@ class Controller {
         return;
       }
       this.initAfterChoose();
+    });
+    this.resetBtn.addEventListener('click', () => {
+      this.player = new Player();
+      this.firstInit();
     });
   }
   initAfterChoose() {
