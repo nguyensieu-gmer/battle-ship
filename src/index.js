@@ -12,6 +12,8 @@ class Controller {
     this.shipsElement = null;
     this.chooseableArea = null;
     this.currentShip = null;
+    this.confirmBtn = null;
+    this.shipList = [2, 3, 3, 4, 5];
 
     this.winnerDialog = document.getElementById('winner_dialog'); // in template
     this.winner = document.getElementById('winner'); // in template
@@ -19,11 +21,12 @@ class Controller {
     this.firstInit();
   }
   firstInit() {
-    this.render.showShipPlacement(this.player.realPlayer);
+    this.render.showShipPlacement(this.player.realPlayer, this.shipList);
     this.previewCell = [];
     this.shipsElement = document.querySelectorAll('.ship');
     this.chooseableArea = document.querySelector('.main_board .grid_container');
     this.currentShip = null;
+    this.confirmBtn = document.getElementById('confirm');
     this.bindEventFirst();
   }
   bindEventFirst() {
@@ -33,7 +36,6 @@ class Controller {
         const dragging = document.querySelector('.dragging');
         this.currentShip = new Ship(Number(dragging.dataset.value));
       });
-
       ship.addEventListener('dragend', () => {
         this.currentShip = null;
         ship.classList.remove('dragging');
@@ -66,6 +68,14 @@ class Controller {
       const dragging = document.querySelector('.dragging');
       if (put) dragging.remove();
       this.clearPreview();
+    });
+    this.confirmBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (!this.player.realPlayer.putEnoughShip(this.shipList.length)) {
+        alert('you need to put all ship to play');
+        return;
+      }
+      this.initAfterChoose();
     });
   }
   initAfterChoose() {
