@@ -6,7 +6,7 @@ class Render {
     this.friend = 'friend';
     this.enemy = 'enemy';
   }
-  showShipPlacement(player) {
+  showShipPlacement(player, shipList) {
     const chooseBoard = document.createElement('div');
     chooseBoard.classList.add('choose_board');
     this.container.appendChild(chooseBoard);
@@ -32,7 +32,6 @@ class Render {
     const shipsArea = document.createElement('div');
     shipsArea.classList.add('ships_area');
     chooseBoard.appendChild(shipsArea);
-    const shipList = [2, 3, 3, 4, 5];
     for (let i = 0; i < shipList.length; i++) {
       const shipContainer = document.createElement('div');
       shipContainer.classList.add('ship_container');
