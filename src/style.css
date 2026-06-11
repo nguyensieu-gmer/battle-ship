@@ -154,7 +154,7 @@ html {
   background-color: rgb(99, 179, 99);
 }
 
-.enemyShip {
+.enemyShip.sunk {
   background-color: salmon;
 }
 
