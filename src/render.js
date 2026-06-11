@@ -38,6 +38,10 @@ class Render {
       shipContainer.classList.add('ship_container');
       const ship = document.createElement('div');
       ship.classList.add('ship');
+      const len = document.createElement('h1');
+      len.classList.add('ship_len');
+      len.textContent = `${shipList[i]}`;
+      ship.appendChild(len);
       ship.dataset.value = shipList[i];
       shipContainer.appendChild(ship);
       ship.draggable = true;

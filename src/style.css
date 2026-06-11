@@ -114,6 +114,12 @@ html {
   height: 100vh;
   margin: 0 auto;
   background-color: #80ded9;
+
+  background-image: url(images/francesco-ungaro-UO9hm7iBh68-unsplash.jpg);
+  background-size: cover;
+  background-position: center 20%;
+  background-repeat: no-repeat;
+  filter: brightness(0.9);
 }
 
 .player {
@@ -124,38 +130,49 @@ html {
 }
 
 .grid_container {
+  padding: 2px;
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
   height: 50rem;
   width: 50rem;
-  gap: 1px;
-  background-color: black;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.251); /* màu trắng mờ */
+  backdrop-filter: blur(3px); /* làm mờ nền phía sau */
+  -webkit-backdrop-filter: blur(3px); /* cho Safari */
+  border: 1px solid rgba(255, 255, 255, 0.116);
 }
 
 .cell {
-  background-color: #6d9dc5;
+  background: rgba(255, 255, 255, 0.2); /* màu trắng mờ */
+  backdrop-filter: blur(5px); /* làm mờ nền phía sau */
+  -webkit-backdrop-filter: blur(5px); /* cho Safari */
+  border: 1px solid rgba(255, 255, 255, 0.116);
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: ease;
+}
+
+.name {
+  color: white;
+  text-align: center;
 }
 
 .cell.preview {
-  border: 1px solid green;
-  background-color: greenyellow;
+  background-color: rgba(172, 255, 47, 0.545);
 }
 
 .cell.invalid {
-  border: 1px solid red;
-  background-color: salmon;
+  background-color: rgba(255, 27, 2, 0.603);
 }
 
 .friendShip {
-  background-color: rgb(99, 179, 99);
+  background-color: rgba(111, 255, 166, 0.674);
 }
 
 .enemyShip.sunk {
-  background-color: salmon;
+  background-color: rgba(255, 96, 78, 0.688);
 }
 
 .attacked {
@@ -171,7 +188,7 @@ html {
 }
 
 .attacked.miss {
-  background-color: rgb(0, 191, 255);
+  background-color: rgba(107, 233, 255, 0.671);
 }
 
 /* main_board */
@@ -189,20 +206,27 @@ html {
   gap: 2rem;
 }
 .ship {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 9rem;
-  height: 9rem;
-  background-color: gray;
+  height: 5rem;
+  background-color: rgb(56, 59, 58);
   cursor: move;
+  border-radius: 10px;
 }
 
 .ship.dragging {
-  opacity: 0.5;
+  opacity: 0.3;
 }
 
 .ship_container {
   width: 9rem;
-  height: 9rem;
-  background-color: rgb(198, 196, 196);
+  height: 5rem;
+  background-color: rgba(198, 196, 196, 0.338);
+  border: 1px solid white;
+  border-radius: 10px;
+  overflow: hidden;
 }
 .decision_area {
   display: flex;
@@ -212,10 +236,52 @@ html {
   gap: 3rem;
 }
 button {
-  border: 1px solid black;
-  padding: 1rem 1.5rem;
+  width: 10rem;
+  height: 5rem;
+  font-size: var(--h2-font-size);
+  color: white;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.2); /* màu trắng mờ */
+  backdrop-filter: blur(8px); /* làm mờ nền phía sau */
+  -webkit-backdrop-filter: blur(8px); /* cho Safari */
+  border: 1px solid rgba(255, 255, 255, 0.943);
+  border-radius: 12px;
+  outline: none;
+  transition: 0.3s ease;
 }
 
 button:hover {
   cursor: pointer;
+  background: rgba(255, 255, 255, 0.383); /* màu trắng mờ */
+}
+
+.ship_len {
+  color: white;
+}
+
+#winner_dialog {
+  border: none;
+  box-shadow: 0 0 10px 5px white;
+  border-radius: 12px;
+  padding: 0;
+  width: 19rem;
+  background: rgba(255, 255, 255, 0.251); /* màu trắng mờ */
+  backdrop-filter: blur(3px); /* làm mờ nền phía sau */
+  -webkit-backdrop-filter: blur(3px); /* cho Safari */
+}
+
+#winner_dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#winner_dialog form {
+  color: white;
+  font-size: var(--h1-font-size);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  text-align: center;
 }
