@@ -101,7 +101,7 @@ class Controller {
         const cells = this.player.computer.findAdjacentShip(x, y, sunk);
         this.bindClassSunk(cells);
       }
-      this.computerAttack();
+      if (!hit) this.computerAttack();
       this.render.markAttackForCell(cell, hit);
       this.haveWinner();
     });
@@ -129,6 +129,7 @@ class Controller {
     );
     const hit = this.player.realPlayer.isOccupied(x, y);
     this.render.markAttackForCell(cell, hit);
+    if (hit) this.computerAttack();
   }
   // notice when it change after intergrate
   resetGame() {
