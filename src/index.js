@@ -97,7 +97,6 @@ class Controller {
       const hit = this.player.computer.isOccupied(x, y);
       if (!success) return;
       const sunk = this.player.computer.isShipSunk(x, y);
-      console.log(sunk);
       if (sunk) {
         const cells = this.player.computer.findAdjacentShip(x, y, sunk);
         this.bindClassSunk(cells);
