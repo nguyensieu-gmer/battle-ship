@@ -67,3 +67,22 @@ test('a ship is sink or not', () => {
   board.isShipSunk(0, 0);
   expect(mockShip.isSunk).toHaveBeenCalled();
 });
+
+test('dfs', () => {
+  let mockShip1 = {
+    len: 4,
+    hit: jest.fn(),
+    isSunk: jest.fn(),
+  };
+  board = new Gameboard();
+  board.placeAShip(0, 1, mockShip);
+  board.placeAShip(1, 0, mockShip1);
+  const cells = board.findAdjacentShip(0, 3, mockShip);
+  expect(cells.length).toBe(3);
+  // check contain
+  expect(cells.sort()).toEqual([
+    [0, 1],
+    [0, 2],
+    [0, 3],
+  ]);
+});
