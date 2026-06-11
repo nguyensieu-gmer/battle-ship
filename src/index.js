@@ -96,6 +96,12 @@ class Controller {
       const success = this.player.computer.receiveAttack(x, y);
       const hit = this.player.computer.isOccupied(x, y);
       if (!success) return;
+      const sunk = this.player.computer.isShipSunk(x, y);
+      console.log(sunk);
+      if (sunk) {
+        const cells = this.player.computer.findAdjacentShip(x, y, sunk);
+        this.bindClassSunk(cells);
+      }
       this.computerAttack();
       this.render.markAttackForCell(cell, hit);
       this.haveWinner();
@@ -178,6 +184,15 @@ class Controller {
         x = Math.floor(Math.random() * bottomBoundary);
         y = Math.floor(Math.random() * rightBoundary);
       }
+    }
+  }
+  bindClassSunk(cells) {
+    for (let [x, y] of cells) {
+      const cell = this.enemyZone.querySelector(
+        `[data-row='${x}'][data-col='${y}']`,
+      );
+      if (!cell) return;
+      cell.classList.add('sunk');
     }
   }
 }
