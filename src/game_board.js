@@ -34,9 +34,9 @@ class Gameboard {
   }
   isShipSunk(x, y) {
     if (this.water[x][y] && this.water[x][y].isSunk()) {
-      return true;
+      return this.water[x][y];
     }
-    return false;
+    return null;
   }
   occupyACell(x, y) {
     this.occupied[x][y] = 1;
@@ -104,6 +104,36 @@ class Gameboard {
   }
   putEnoughShip(maxAmountOfShip) {
     return this.ships === maxAmountOfShip;
+  }
+  findAdjacentShip(x, y, ship) {
+    const cells = [];
+    const visited = createNullMatrix(this.row, this.col, 0);
+    const directions = [
+      [0, 1], // phải
+      [0, -1], // trái
+      [1, 0], // xuống
+      [-1, 0], // lên
+    ];
+    const dfs = (x, y, ship) => {
+      cells.push([x, y]);
+      visited[x][y] = 1;
+      for (let [dx, dy] of directions) {
+        const x1 = x + dx;
+        const y1 = y + dy;
+        if (
+          x1 >= 0 &&
+          x1 < this.row &&
+          y1 >= 0 &&
+          y1 < this.col &&
+          this.water[x1][y1] === ship &&
+          visited[x1][y1] === 0
+        ) {
+          dfs(x1, y1, ship);
+        }
+      }
+    };
+    dfs(x, y, ship);
+    return cells;
   }
 }
 
