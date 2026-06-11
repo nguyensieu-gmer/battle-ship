@@ -15,6 +15,8 @@ class Controller {
     this.confirmBtn = null;
     this.shipList = [2, 3, 3, 4, 5];
     this.resetBtn = null;
+    this.attackList = [];
+    this.hittedList = [];
 
     this.winnerDialog = document.getElementById('winner_dialog'); // in template
     this.winner = document.getElementById('winner'); // in template
@@ -112,24 +114,64 @@ class Controller {
       }
     });
   }
-  randomAttack() {
-    const x = Math.floor(Math.random() * 10);
-    const y = Math.floor(Math.random() * 10);
+  randomValidAttack() {
+    let x = Math.floor(Math.random() * 10);
+    let y = Math.floor(Math.random() * 10);
+    while (this.player.realPlayer.attacked[x][y] === 1) {
+      x = Math.floor(Math.random() * 10);
+      y = Math.floor(Math.random() * 10);
+    }
     return [x, y];
   }
   // computer attack turn
-  computerAttack() {
-    let [x, y] = this.randomAttack();
-    while (this.player.realPlayer.attacked[x][y] === 1) {
-      [x, y] = this.randomAttack();
+  attackValid4Dir(x, y) {
+    const directions = [
+      [-1, 0],
+      [1, 0],
+      [0, -1],
+      [0, 1],
+    ];
+    for (let [dx, dy] of directions) {
+      let nx = x + dx;
+      let ny = y + dy;
+      if (
+        nx >= 0 &&
+        nx < 10 &&
+        ny >= 0 &&
+        ny < 10 &&
+        this.player.realPlayer.attacked[nx][ny] === 0
+      ) {
+        this.attackList.push([nx, ny]);
+      }
     }
+  }
+  computerDecision() {
+    while (this.hittedList.length !== 0) {
+      let [x, y] = this.hittedList.pop();
+      this.attackValid4Dir(x, y);
+    }
+    while (this.attackList.length !== 0) {
+      let [x, y] = this.attackList.pop();
+      if (this.player.realPlayer.attacked[x][y] === 1) continue;
+      return [x, y];
+    }
+    return this.randomValidAttack();
+  }
+  computerAttack() {
+    let [x, y] = this.computerDecision();
     this.player.realPlayer.receiveAttack(x, y);
     const cell = this.friendZone.querySelector(
       `[data-row='${x}'][data-col='${y}']`,
     );
     const hit = this.player.realPlayer.isOccupied(x, y);
     this.render.markAttackForCell(cell, hit);
-    if (hit) this.computerAttack();
+    if (hit) {
+      this.hittedList.push([x, y]);
+      if (this.player.realPlayer.isShipSunk(x, y)) {
+        this.attackList = [];
+      }
+      this.computerAttack();
+    }
   }
   // notice when it change after intergrate
   resetGame() {
