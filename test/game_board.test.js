@@ -66,6 +66,7 @@ test('a ship is sink or not', () => {
   board.receiveAttack(0, 1);
   board.isShipSunk(0, 0);
   expect(mockShip.isSunk).toHaveBeenCalled();
+  expect(board.isShipSunk(9, 9)).toBe(null);
 });
 
 test('dfs', () => {
