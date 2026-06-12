@@ -20,7 +20,6 @@ class Controller {
     this.x_asix = true;
     this.xAxisBtn = null;
     this.yAxisBtn = null;
-    this.highProbabilityPointList = new Set(); // 'xy'
 
     this.winnerDialog = document.getElementById('winner_dialog'); // in template
     this.winner = document.getElementById('winner'); // in template
