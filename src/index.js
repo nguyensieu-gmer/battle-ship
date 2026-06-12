@@ -167,8 +167,78 @@ class Controller {
       }
     }
   }
+  rowValidAttack(point1, point2) {
+    const cordinates = [point1, point2];
+    const directions = [
+      [0, -1],
+      [0, 1],
+    ];
+    for (let [x, y] of cordinates) {
+      for (let [dx, dy] of directions) {
+        let nx = x + dx;
+        let ny = y + dy;
+        if (
+          nx >= 0 &&
+          nx < 10 &&
+          ny >= 0 &&
+          ny < 10 &&
+          this.player.realPlayer.attacked[nx][ny] === 0
+        ) {
+          this.attackList.push([nx, ny]);
+        }
+      }
+    }
+  }
+  colValidAttack(point1, point2) {
+    const cordinates = [point1, point2];
+    const directions = [
+      [-1, 0],
+      [1, 0],
+    ];
+    for (let [x, y] of cordinates) {
+      for (let [dx, dy] of directions) {
+        let nx = x + dx;
+        let ny = y + dy;
+        if (
+          nx >= 0 &&
+          nx < 10 &&
+          ny >= 0 &&
+          ny < 10 &&
+          this.player.realPlayer.attacked[nx][ny] === 0 &&
+          !this.attackList.some(([a, b]) => {
+            return a === nx && b === ny;
+          })
+        ) {
+          this.attackList.push([nx, ny]);
+        }
+      }
+    }
+  }
   computerDecision() {
-    while (this.hittedList.length !== 0) {
+    while (this.hittedList.length >= 2) {
+      const len = this.hittedList.length;
+      const point1 = this.hittedList[len - 1];
+      const point2 = this.hittedList[len - 2];
+      if (point1[0] === point2[0]) {
+        this.rowValidAttack(point1, point2);
+        this.hittedList.pop();
+        this.hittedList.pop();
+      } else if (point1[1] === point2[1]) {
+        this.colValidAttack(point1, point2);
+        this.hittedList.pop();
+        this.hittedList.pop();
+      }
+    }
+    if (this.hittedList.length === 1) {
+      let [x, y] = this.hittedList[0];
+      this.attackValid4Dir(x, y);
+      while (this.attackList.length !== 0) {
+        let [x, y] = this.attackList.pop();
+        if (this.player.realPlayer.attacked[x][y] === 1) continue;
+        return [x, y];
+      }
+    }
+    while (this.hittedList.length > 0) {
       let [x, y] = this.hittedList.pop();
       this.attackValid4Dir(x, y);
     }
