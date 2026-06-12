@@ -17,6 +17,9 @@ class Controller {
     this.resetBtn = null;
     this.attackList = [];
     this.hittedList = [];
+    this.x_asix = true;
+    this.xAxisBtn = null;
+    this.yAxisBtn = null;
 
     this.winnerDialog = document.getElementById('winner_dialog'); // in template
     this.winner = document.getElementById('winner'); // in template
@@ -31,6 +34,8 @@ class Controller {
     this.currentShip = null;
     this.confirmBtn = document.getElementById('confirm');
     this.resetBtn = document.getElementById('reset');
+    this.xAxisBtn = document.getElementById('x_axis');
+    this.yAxisBtn = document.getElementById('y-axis');
     this.bindEventFirst();
   }
   bindEventFirst() {
@@ -62,7 +67,12 @@ class Controller {
       if (!this.currentShip) return;
       const x = Number(cell.dataset.row);
       const y = Number(cell.dataset.col);
-      const put = this.player.realPlayer.placeAShip(x, y, this.currentShip);
+      const put = this.player.realPlayer.placeAShip(
+        x,
+        y,
+        this.currentShip,
+        this.x_asix,
+      );
       this.render.renderBoard(this.player.realPlayer, this.chooseableArea);
       const dragging = document.querySelector('.dragging');
       if (put) dragging.remove();
@@ -222,9 +232,11 @@ class Controller {
       const ship = new Ship(lenOfShip);
       let x = Math.floor(Math.random() * bottomBoundary);
       let y = Math.floor(Math.random() * rightBoundary);
-      while (!player.placeAShip(x, y, ship)) {
+      let x_asix = Math.floor(Math.random() * 2);
+      while (!player.placeAShip(x, y, ship, x_asix)) {
         x = Math.floor(Math.random() * bottomBoundary);
         y = Math.floor(Math.random() * rightBoundary);
+        x_asix = Math.floor(Math.random() * 2);
       }
     }
   }
