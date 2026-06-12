@@ -50,20 +50,21 @@ class Gameboard {
   reduceShips() {
     this.ships--;
   }
-  placeAShip(x, y, ship) {
-    //place ship in horizontal
-    if (!this.isInOfBound(x, y)) {
-      return false;
-    }
-    if (y + ship.len - 1 > this.col - 1) {
-      return false;
-    }
-    if (!this.canPlace(x, y, ship)) {
-      return false;
+  placeAShip(x, y, ship, x_asix) {
+    const dx = x_asix ? 0 : 1;
+    const dy = x_asix ? 1 : 0;
+    for (let i = 0; i < ship.len; i++) {
+      let nx = x + dx * i;
+      let ny = y + dy * i;
+      if (!this.isInOfBound(nx, ny) || this.water[nx][ny]) {
+        return false;
+      }
     }
     for (let i = 0; i < ship.len; i++) {
-      this.water[x][y + i] = ship;
-      this.occupyACell(x, y + i);
+      let nx = x + dx * i;
+      let ny = y + dy * i;
+      this.water[nx][ny] = ship;
+      this.occupyACell(nx, ny);
     }
     this.addShips();
     return true;
@@ -74,9 +75,13 @@ class Gameboard {
     }
     return true;
   }
-  canPlace(x, y, ship) {
+  canPlace(x, y, ship, x_asix) {
+    const dx = x_asix ? 0 : 1;
+    const dy = x_asix ? 1 : 0;
     for (let i = 0; i < ship.len; i++) {
-      if (this.water[x][y + i]) {
+      let nx = x + dx * i;
+      let ny = y + dy * i;
+      if (this.water[nx][ny]) {
         return false;
       }
     }
