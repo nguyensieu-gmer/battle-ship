@@ -91,6 +91,18 @@ class Controller {
       this.player = new Player();
       this.firstInit();
     });
+    this.xAxisBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.yAxisBtn.classList.remove('clicked');
+      this.xAxisBtn.classList.add('clicked');
+      this.x_asix = this.xAxisBtn.dataset.axis;
+    });
+    this.yAxisBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.yAxisBtn.classList.add('clicked');
+      this.xAxisBtn.classList.remove('clicked');
+      this.x_asix = this.yAxisBtn.dataset.axis;
+    });
   }
   initAfterChoose() {
     this.render.renderIntoScreen(this.player);
