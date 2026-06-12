@@ -16,6 +16,7 @@ class Render {
     const axisArea = document.createElement('div');
     axisArea.classList.add('decision_area');
     const x_axis = document.createElement('button');
+    x_axis.classList.add('clicked');
     x_axis.textContent = 'x-axis';
     x_axis.id = 'x_axis';
     x_axis.dataset.axis = true;

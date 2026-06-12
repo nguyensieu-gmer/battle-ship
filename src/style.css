@@ -202,6 +202,7 @@ html {
 }
 .ships_area {
   display: flex;
+  justify-content: center;
   flex-direction: column;
   gap: 2rem;
 }
@@ -284,4 +285,8 @@ button:hover {
   align-items: center;
   gap: 15px;
   text-align: center;
+}
+
+button.clicked {
+  background: rgba(255, 255, 255, 0.383); /* màu trắng mờ */
 }
