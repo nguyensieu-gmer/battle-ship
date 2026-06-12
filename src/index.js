@@ -193,8 +193,6 @@ class Controller {
           })
         ) {
           this.attackList.push([nx, ny]);
-          const key = this.makeKey(nx, ny);
-          this.highProbabilityPointList.add(key);
         }
       }
     }
@@ -220,8 +218,6 @@ class Controller {
           })
         ) {
           this.attackList.push([nx, ny]);
-          const key = this.makeKey(nx, ny);
-          this.highProbabilityPointList.add(key);
         }
       }
     }
@@ -272,20 +268,10 @@ class Controller {
     if (hit) {
       this.hittedList.push([x, y]);
       if (this.player.realPlayer.isShipSunk(x, y)) {
-        this.attackList = this.makeImportantPointList();
+        this.attackList = [];
       }
       this.computerAttack();
     }
-  }
-  makeImportantPointList() {
-    const newAttackList = this.attackList.filter(([x, y]) => {
-      const key = this.makeKey(x, y);
-      return this.highProbabilityPointList.has(key);
-    });
-    return newAttackList;
-  }
-  makeKey(x, y) {
-    return `${x}, ${y}`;
   }
   resetGame() {
     this.player = new Player();
