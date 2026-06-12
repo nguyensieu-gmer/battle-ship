@@ -6,8 +6,8 @@ class Controller {
   constructor() {
     this.player = new Player();
     this.render = new Render();
-    this.enemyZone = null; // after render competion
-    this.friendZone = null; //  after render competion
+    this.enemyZone = null;
+    this.friendZone = null;
     this.previewCell = [];
     this.shipsElement = null;
     this.chooseableArea = null;
@@ -56,7 +56,7 @@ class Controller {
       if (!cell) return;
       const x = Number(cell.dataset.row);
       const y = Number(cell.dataset.col);
-      this.showPreview(x, y, this.currentShip);
+      this.showPreview(x, y, this.currentShip, this.x_asix);
     });
     this.chooseableArea.addEventListener('dragleave', () => {
       this.clearPreview();
@@ -95,13 +95,13 @@ class Controller {
       e.preventDefault();
       this.yAxisBtn.classList.remove('clicked');
       this.xAxisBtn.classList.add('clicked');
-      this.x_asix = this.xAxisBtn.dataset.axis;
+      this.x_asix = this.xAxisBtn.dataset.axis === 'true' ? true : false;
     });
     this.yAxisBtn.addEventListener('click', (e) => {
       e.preventDefault();
       this.yAxisBtn.classList.add('clicked');
       this.xAxisBtn.classList.remove('clicked');
-      this.x_asix = this.yAxisBtn.dataset.axis;
+      this.x_asix = this.yAxisBtn.dataset.axis === 'false' ? false : true;
     });
   }
   initAfterChoose() {
@@ -195,7 +195,6 @@ class Controller {
       this.computerAttack();
     }
   }
-  // notice when it change after intergrate
   resetGame() {
     this.player = new Player();
     this.render.renderBoard(this.player.realPlayer, this.friendZone);
@@ -212,12 +211,14 @@ class Controller {
       this.winnerDialog.showModal();
     }
   }
-  showPreview(x, y, ship) {
+  showPreview(x, y, ship, x_axis) {
     this.clearPreview();
     let cells = [];
+    const dx = x_axis ? 0 : 1;
+    const dy = x_axis ? 1 : 0;
     for (let i = 0; i < ship.len; i++) {
-      let nx = x;
-      let ny = y + i;
+      let nx = x + dx * i;
+      let ny = y + dy * i;
       if (nx >= 10 || ny >= 10) return;
       const cell = document.querySelector(
         `[data-row='${nx}'][data-col='${ny}']`,
@@ -238,7 +239,6 @@ class Controller {
     });
     this.previewCell = [];
   }
-  // can be change if it can be put ship in y-axis
   placeShipRandomly(player, shipList, rightBoundary, bottomBoundary) {
     for (let lenOfShip of shipList) {
       const ship = new Ship(lenOfShip);
