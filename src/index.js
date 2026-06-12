@@ -20,6 +20,7 @@ class Controller {
     this.x_asix = true;
     this.xAxisBtn = null;
     this.yAxisBtn = null;
+    this.highProbabilityPointList = new Set(); // 'xy'
 
     this.winnerDialog = document.getElementById('winner_dialog'); // in template
     this.winner = document.getElementById('winner'); // in template
@@ -36,6 +37,7 @@ class Controller {
     this.resetBtn = document.getElementById('reset');
     this.xAxisBtn = document.getElementById('x_axis');
     this.yAxisBtn = document.getElementById('y-axis');
+    this.x_asix = true;
     this.bindEventFirst();
   }
   bindEventFirst() {
@@ -161,7 +163,10 @@ class Controller {
         nx < 10 &&
         ny >= 0 &&
         ny < 10 &&
-        this.player.realPlayer.attacked[nx][ny] === 0
+        this.player.realPlayer.attacked[nx][ny] === 0 &&
+        !this.attackList.some(([a, b]) => {
+          return a === nx && b === ny;
+        })
       ) {
         this.attackList.push([nx, ny]);
       }
@@ -182,9 +187,14 @@ class Controller {
           nx < 10 &&
           ny >= 0 &&
           ny < 10 &&
-          this.player.realPlayer.attacked[nx][ny] === 0
+          this.player.realPlayer.attacked[nx][ny] === 0 &&
+          !this.attackList.some(([a, b]) => {
+            return a === nx && b === ny;
+          })
         ) {
           this.attackList.push([nx, ny]);
+          const key = this.makeKey(nx, ny);
+          this.highProbabilityPointList.add(key);
         }
       }
     }
@@ -210,6 +220,8 @@ class Controller {
           })
         ) {
           this.attackList.push([nx, ny]);
+          const key = this.makeKey(nx, ny);
+          this.highProbabilityPointList.add(key);
         }
       }
     }
@@ -260,10 +272,20 @@ class Controller {
     if (hit) {
       this.hittedList.push([x, y]);
       if (this.player.realPlayer.isShipSunk(x, y)) {
-        this.attackList = [];
+        this.attackList = this.makeImportantPointList();
       }
       this.computerAttack();
     }
+  }
+  makeImportantPointList() {
+    const newAttackList = this.attackList.filter(([x, y]) => {
+      const key = this.makeKey(x, y);
+      return this.highProbabilityPointList.has(key);
+    });
+    return newAttackList;
+  }
+  makeKey(x, y) {
+    return `${x}, ${y}`;
   }
   resetGame() {
     this.player = new Player();
